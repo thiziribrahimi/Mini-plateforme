@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { auth, db } from './firebase';
 import { doc, getDoc } from 'firebase/firestore';
-import { signOut } from 'firebase/auth';
 import Auth from './Auth';
 import ResourceForm from './ResourceForm';
 import ResourceList from './ResourceList';
 import SavedResources from './SavedResources';
+import Navbar from './Navbar';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -31,36 +31,18 @@ function App() {
     return () => unsubscribe();
   }, []);
 
-  const handleLogout = async () => {
-    try {
-      await signOut(auth);
-      alert('Déconnexion réussie !');
-    } catch (error) {
-      alert(error.message);
-    }
-  };
-
   return (
     <div className="min-vh-100 bg-light text-dark">
       {user ? (
-        <div className="container py-5">
-          <h2 className="text-center mb-3">
-            Bienvenue, {user.email} <span className="text-muted">({role})</span>
-          </h2>
+        <>
+          <Navbar userEmail={user.email} role={role} />
 
-          <div className="text-center mb-4">
-            <button
-              onClick={handleLogout}
-              className="btn btn-danger"
-            >
-              Se déconnecter
-            </button>
+          <div className="container py-4">
+            {role === 'tuteur' && <ResourceForm />}
+            <ResourceList role={role} />
+            {role === 'eleve' && <SavedResources />}
           </div>
-
-          {role === 'tuteur' && <ResourceForm />}
-          <ResourceList role={role} />
-          {role === 'eleve' && <SavedResources />}
-        </div>
+        </>
       ) : (
         <Auth />
       )}
