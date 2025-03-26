@@ -5,6 +5,7 @@ import { signOut } from 'firebase/auth';
 import Auth from './Auth';
 import ResourceForm from './ResourceForm';
 import ResourceList from './ResourceList';
+import SavedResources from './SavedResources';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -15,7 +16,6 @@ function App() {
       setUser(currentUser);
 
       if (currentUser) {
-        // Va chercher le rôle de l'utilisateur dans Firestore
         const docRef = doc(db, 'users', currentUser.uid);
         const docSnap = await getDoc(docRef);
 
@@ -34,27 +34,33 @@ function App() {
   const handleLogout = async () => {
     try {
       await signOut(auth);
-      alert("Déconnexion réussie !");
+      alert('Déconnexion réussie !');
     } catch (error) {
       alert(error.message);
     }
   };
 
   return (
-    <div>
+    <div className="min-vh-100 bg-light text-dark">
       {user ? (
-        <>
-          <h2 style={{ textAlign: 'center' }}>
-            Bienvenue, {user.email} ({role})
+        <div className="container py-5">
+          <h2 className="text-center mb-3">
+            Bienvenue, {user.email} <span className="text-muted">({role})</span>
           </h2>
-          <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-            <button onClick={handleLogout}>Se déconnecter</button>
+
+          <div className="text-center mb-4">
+            <button
+              onClick={handleLogout}
+              className="btn btn-danger"
+            >
+              Se déconnecter
+            </button>
           </div>
 
-          {/* Si le rôle est tuteur, on affiche le formulaire */}
           {role === 'tuteur' && <ResourceForm />}
           <ResourceList role={role} />
-        </>
+          {role === 'eleve' && <SavedResources />}
+        </div>
       ) : (
         <Auth />
       )}
