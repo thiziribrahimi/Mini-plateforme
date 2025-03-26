@@ -83,7 +83,10 @@ export default function ResourceList({ role }) {
   return (
     <div className="card shadow-sm">
       <div className="card-body">
-        <h4 className="card-title">Ressources {role === 'tuteur' ? 'ajoutées par vous' : 'disponibles'}</h4>
+          <h4 className="card-title">
+             📚 Ressources {role === 'tuteur' ? 'ajoutées par vous' : 'disponibles'}
+          </h4>
+
 
         <input
           type="text"
