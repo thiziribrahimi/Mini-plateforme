@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
   collection, query, where, onSnapshot,
-  deleteDoc, doc, updateDoc
+  deleteDoc, doc, updateDoc, addDoc
 } from 'firebase/firestore';
 import { db, auth } from './firebase';
 
@@ -16,19 +16,12 @@ export default function ResourceList({ role }) {
     const user = auth.currentUser;
     if (!user) return;
 
-    let q;
-
-    if (role === 'tuteur') {
-      q = query(collection(db, 'resources'), where('userId', '==', user.uid));
-    } else {
-      q = collection(db, 'resources');
-    }
+    const q = role === 'tuteur'
+      ? query(collection(db, 'resources'), where('userId', '==', user.uid))
+      : collection(db, 'resources');
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      const items = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }));
+      const items = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       setResources(items);
     });
 
@@ -66,52 +59,88 @@ export default function ResourceList({ role }) {
     cancelEdit();
   };
 
+  const handleSave = async (resource) => {
+    const user = auth.currentUser;
+    if (!user) return;
+
+    try {
+      const savedResource = {
+        userId: user.uid,
+        resourceId: resource.id,
+        title: resource.title,
+        url: resource.url,
+        savedAt: new Date()
+      };
+
+      await addDoc(collection(db, 'savedResources'), savedResource);
+      alert('Ressource ajoutée à votre liste !');
+    } catch (err) {
+      console.error("Erreur ajout ressource :", err);
+      alert("Erreur lors de l\'ajout !");
+    }
+  };
+
   return (
-    <div style={{ maxWidth: 600, margin: 'auto', padding: 20 }}>
-      <h3>{role === 'tuteur' ? 'Vos ressources' : 'Ressources disponibles'}</h3>
+    <div className="card shadow-sm">
+      <div className="card-body">
+        <h4 className="card-title">Ressources {role === 'tuteur' ? 'ajoutées par vous' : 'disponibles'}</h4>
 
-      <input
-        type="text"
-        placeholder="Rechercher une ressource..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        style={{ width: '100%', padding: '8px', marginBottom: '15px' }}
-      />
+        <input
+          type="text"
+          className="form-control mb-3"
+          placeholder="Rechercher une ressource..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
 
-      <ul>
-        {filteredResources.map(resource => (
-          <li key={resource.id}>
-            {editingId === resource.id ? (
-              <>
-                <input
-                  type="text"
-                  value={editedTitle}
-                  onChange={(e) => setEditedTitle(e.target.value)}
-                /><br />
-                <input
-                  type="url"
-                  value={editedUrl}
-                  onChange={(e) => setEditedUrl(e.target.value)}
-                /><br />
-                <button onClick={() => saveEdit(resource.id)}>Enregistrer</button>
-                <button onClick={cancelEdit}>Annuler</button>
-              </>
-            ) : (
-              <>
-                <strong>{resource.title}</strong><br />
-                <a href={resource.url} target="_blank" rel="noreferrer">{resource.url}</a><br />
-                {role === 'tuteur' && resource.userId === auth.currentUser.uid && (
-                  <>
-                    <button onClick={() => startEdit(resource)}>Modifier</button>
-                    <button onClick={() => handleDelete(resource.id)}>Supprimer</button>
-                  </>
-                )}
-              </>
-            )}
-            <hr />
-          </li>
-        ))}
-      </ul>
+        <ul className="list-group">
+          {filteredResources.map(resource => (
+            <li key={resource.id} className="list-group-item">
+              {editingId === resource.id ? (
+                <>
+                  <input
+                    type="text"
+                    className="form-control mb-2"
+                    value={editedTitle}
+                    onChange={(e) => setEditedTitle(e.target.value)}
+                  />
+                  <input
+                    type="url"
+                    className="form-control mb-2"
+                    value={editedUrl}
+                    onChange={(e) => setEditedUrl(e.target.value)}
+                  />
+                  <button onClick={() => saveEdit(resource.id)} className="btn btn-primary btn-sm me-2">Enregistrer</button>
+                  <button onClick={cancelEdit} className="btn btn-secondary btn-sm">Annuler</button>
+                </>
+              ) : (
+                <>
+                  <strong>{resource.title}</strong><br />
+                  <a href={resource.url} target="_blank" rel="noreferrer">{resource.url}</a><br />
+
+                  {role === 'tuteur' && resource.userId === auth.currentUser.uid && (
+                    <div className="mt-2">
+                      <button onClick={() => startEdit(resource)} className="btn btn-outline-primary btn-sm me-2">Modifier</button>
+                      <button onClick={() => handleDelete(resource.id)} className="btn btn-outline-danger btn-sm">Supprimer</button>
+                    </div>
+                  )}
+
+                  {role === 'eleve' && (
+                    <div className="mt-2">
+                      <button
+                        onClick={() => handleSave(resource)}
+                        className="btn btn-outline-success btn-sm"
+                      >
+                        Ajouter à ma liste
+                      </button>
+                    </div>
+                  )}
+                </>
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }

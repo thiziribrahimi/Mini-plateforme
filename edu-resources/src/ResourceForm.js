@@ -8,12 +8,8 @@ export default function ResourceForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const user = auth.currentUser;
-    if (!user) {
-      alert("Tu dois être connecté !");
-      return;
-    }
+    if (!user) return alert("Tu dois être connecté.");
 
     try {
       await addDoc(collection(db, 'resources'), {
@@ -22,35 +18,44 @@ export default function ResourceForm() {
         userId: user.uid,
         createdAt: serverTimestamp()
       });
-
       setTitle('');
       setUrl('');
-      alert("Ressource ajoutée !");
+      alert('Ressource ajoutée !');
     } catch (error) {
       alert(error.message);
     }
   };
 
   return (
-    <div style={{ maxWidth: 400, margin: 'auto', padding: 20 }}>
-      <h3>Ajouter une ressource</h3>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Titre de la ressource"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          required
-        /><br /><br />
-        <input
-          type="url"
-          placeholder="Lien URL"
-          value={url}
-          onChange={(e) => setUrl(e.target.value)}
-          required
-        /><br /><br />
-        <button type="submit">Ajouter</button>
-      </form>
+    <div className="card mb-4 shadow-sm">
+      <div className="card-body">
+        <h4 className="card-title mb-3">Ajouter une ressource</h4>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-3">
+            <label>Titre</label>
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Ex: Introduction à React"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              required
+            />
+          </div>
+          <div className="mb-3">
+            <label>Lien URL</label>
+            <input
+              type="url"
+              className="form-control"
+              placeholder="https://..."
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+              required
+            />
+          </div>
+          <button type="submit" className="btn btn-success w-100">Ajouter</button>
+        </form>
+      </div>
     </div>
   );
 }
