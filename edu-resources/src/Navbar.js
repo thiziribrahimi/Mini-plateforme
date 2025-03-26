@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useRef, useEffect } from 'react';
 import { auth } from './firebase';
 import {
   updateEmail,
@@ -21,7 +21,18 @@ export default function Navbar({ userEmail, role }) {
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
 
-  const toggleDropdown = () => setShowDropdown(!showDropdown);
+  const dropdownRef = useRef();
+
+  // Fermer le menu dropdown si clic en dehors
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowDropdown(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const handleLogout = async () => {
     await auth.signOut();
@@ -78,7 +89,6 @@ export default function Navbar({ userEmail, role }) {
           <a className="navbar-brand fw-bold" href="/">📚 EduRessources</a>
 
           <div className="d-flex align-items-center gap-3">
-            {/* Thème */}
             <button
               onClick={toggleTheme}
               className="btn btn-outline-secondary btn-sm"
@@ -88,10 +98,10 @@ export default function Navbar({ userEmail, role }) {
             </button>
 
             {/* Avatar */}
-            <div className="position-relative">
+            <div className="position-relative" ref={dropdownRef}>
               <div
                 className="avatar-circle"
-                onClick={toggleDropdown}
+                onClick={() => setShowDropdown(!showDropdown)}
                 title="Mon compte"
               >
                 {userEmail?.charAt(0).toUpperCase()}
@@ -119,7 +129,7 @@ export default function Navbar({ userEmail, role }) {
         </div>
       </nav>
 
-      {/* Modales : profil, paramètres, mot de passe */}
+      {/* Modale Profil */}
       {showProfile && (
         <div className="modal fade show d-block" tabIndex="-1">
           <div className="modal-dialog"><div className="modal-content">
@@ -145,6 +155,7 @@ export default function Navbar({ userEmail, role }) {
         </div>
       )}
 
+      {/* Modale Paramètres */}
       {showSettings && (
         <div className="modal fade show d-block" tabIndex="-1">
           <div className="modal-dialog"><div className="modal-content">
@@ -165,6 +176,7 @@ export default function Navbar({ userEmail, role }) {
         </div>
       )}
 
+      {/* Modale Modifier mot de passe */}
       {showPasswordModal && (
         <div className="modal fade show d-block" tabIndex="-1">
           <div className="modal-dialog"><div className="modal-content">

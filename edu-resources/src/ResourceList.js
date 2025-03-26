@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
   collection, query, where, onSnapshot,
-  deleteDoc, doc, updateDoc, addDoc
+  deleteDoc, doc, updateDoc, addDoc, getDocs
 } from 'firebase/firestore';
 import { db, auth } from './firebase';
 
@@ -11,6 +11,7 @@ export default function ResourceList({ role }) {
   const [editingId, setEditingId] = useState(null);
   const [editedTitle, setEditedTitle] = useState('');
   const [editedUrl, setEditedUrl] = useState('');
+  const [editedDescription, setEditedDescription] = useState('');
 
   useEffect(() => {
     const user = auth.currentUser;
@@ -30,7 +31,8 @@ export default function ResourceList({ role }) {
 
   const filteredResources = resources.filter((res) =>
     res.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    res.url.toLowerCase().includes(searchTerm.toLowerCase())
+    res.url.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (res.description || '').toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const handleDelete = async (id) => {
@@ -43,18 +45,21 @@ export default function ResourceList({ role }) {
     setEditingId(resource.id);
     setEditedTitle(resource.title);
     setEditedUrl(resource.url);
+    setEditedDescription(resource.description || '');
   };
 
   const cancelEdit = () => {
     setEditingId(null);
     setEditedTitle('');
     setEditedUrl('');
+    setEditedDescription('');
   };
 
   const saveEdit = async (id) => {
     await updateDoc(doc(db, 'resources', id), {
       title: editedTitle,
-      url: editedUrl
+      url: editedUrl,
+      description: editedDescription
     });
     cancelEdit();
   };
@@ -64,29 +69,39 @@ export default function ResourceList({ role }) {
     if (!user) return;
 
     try {
+      const snapshot = await getDocs(
+        query(
+          collection(db, 'savedResources'),
+          where('userId', '==', user.uid),
+          where('resourceId', '==', resource.id)
+        )
+      );
+
+      if (!snapshot.empty) {
+        alert("⚠️ Cette ressource est déjà enregistrée.");
+        return;
+      }
+
       const savedResource = {
         userId: user.uid,
         resourceId: resource.id,
         title: resource.title,
         url: resource.url,
+        description: resource.description || '',
         savedAt: new Date()
       };
 
       await addDoc(collection(db, 'savedResources'), savedResource);
       alert('Ressource ajoutée à votre liste !');
     } catch (err) {
-      console.error("Erreur ajout ressource :", err);
-      alert("Erreur lors de l\'ajout !");
+      alert("Erreur lors de l'ajout !");
     }
   };
 
   return (
-    <div className="card shadow-sm">
+    <div className="card shadow-sm bg-light-gradient mb-4">
       <div className="card-body">
-          <h4 className="card-title">
-             📚 Ressources {role === 'tuteur' ? 'ajoutées par vous' : 'disponibles'}
-          </h4>
-
+        <h4 className="card-title">📚 Ressources {role === 'tuteur' ? 'ajoutées par vous' : 'disponibles'}</h4>
 
         <input
           type="text"
@@ -113,6 +128,12 @@ export default function ResourceList({ role }) {
                     value={editedUrl}
                     onChange={(e) => setEditedUrl(e.target.value)}
                   />
+                  <textarea
+                    className="form-control mb-2"
+                    rows="2"
+                    value={editedDescription}
+                    onChange={(e) => setEditedDescription(e.target.value)}
+                  />
                   <button onClick={() => saveEdit(resource.id)} className="btn btn-primary btn-sm me-2">Enregistrer</button>
                   <button onClick={cancelEdit} className="btn btn-secondary btn-sm">Annuler</button>
                 </>
@@ -120,6 +141,7 @@ export default function ResourceList({ role }) {
                 <>
                   <strong>{resource.title}</strong><br />
                   <a href={resource.url} target="_blank" rel="noreferrer">{resource.url}</a><br />
+                  {resource.description && <p className="text-muted mb-1">{resource.description}</p>}
 
                   {role === 'tuteur' && resource.userId === auth.currentUser.uid && (
                     <div className="mt-2">

@@ -41,7 +41,7 @@ export default function SavedResources() {
   return (
     <div className="card mt-4 shadow-sm">
       <div className="card-body">
-        <h4 className="card-title">Mes ressources enregistrées</h4>
+        <h4 className="card-title">📌 Mes ressources enregistrées</h4>
 
         {savedResources.length === 0 ? (
           <p className="text-muted">Aucune ressource enregistrée.</p>
