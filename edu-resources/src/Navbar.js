@@ -1,7 +1,6 @@
 import React, { useContext, useState, useRef, useEffect } from 'react';
 import { auth } from './firebase';
 import {
-  updateEmail,
   sendPasswordResetEmail,
   updatePassword,
   reauthenticateWithCredential,
@@ -17,16 +16,14 @@ export default function Navbar({ userEmail, role }) {
   const [showSettings, setShowSettings] = useState(false);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
 
-  const [newEmail, setNewEmail] = useState('');
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
 
   const dropdownRef = useRef();
 
-  // Fermer le menu dropdown si clic en dehors
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
         setShowDropdown(false);
       }
     };
@@ -38,24 +35,11 @@ export default function Navbar({ userEmail, role }) {
     await auth.signOut();
   };
 
-  const handleChangeEmail = async () => {
-    const user = auth.currentUser;
-    if (!user || !newEmail) return;
-
-    try {
-      await updateEmail(user, newEmail);
-      alert('✅ Email mis à jour. Veuillez vous reconnecter.');
-      await auth.signOut();
-    } catch (err) {
-      alert("❌ Une erreur est survenue. Vérifie que tu es bien reconnecté récemment.");
-    }
-  };
-
   const handleResetPassword = async () => {
     try {
       await sendPasswordResetEmail(auth, userEmail);
       alert("📩 Email de réinitialisation envoyé !");
-    } catch (err) {
+    } catch {
       alert("❌ Impossible d’envoyer l’email.");
     }
   };
@@ -71,7 +55,7 @@ export default function Navbar({ userEmail, role }) {
       setShowPasswordModal(false);
       setOldPassword('');
       setNewPassword('');
-    } catch (err) {
+    } catch {
       alert("❌ Échec. Vérifie ton ancien mot de passe.");
     }
   };
@@ -97,7 +81,6 @@ export default function Navbar({ userEmail, role }) {
               {theme === 'light' ? '🌙' : '☀️'}
             </button>
 
-            {/* Avatar */}
             <div className="position-relative" ref={dropdownRef}>
               <div
                 className="avatar-circle"
@@ -129,7 +112,7 @@ export default function Navbar({ userEmail, role }) {
         </div>
       </nav>
 
-      {/* Modale Profil */}
+      {/* Modale Profil (email affiché mais non modifiable) */}
       {showProfile && (
         <div className="modal fade show d-block" tabIndex="-1">
           <div className="modal-dialog"><div className="modal-content">
@@ -139,11 +122,6 @@ export default function Navbar({ userEmail, role }) {
             </div>
             <div className="modal-body">
               <p><strong>Email :</strong> {userEmail}</p>
-              <div className="mb-3">
-                <label>Nouveau mail :</label>
-                <input type="email" className="form-control" onChange={(e) => setNewEmail(e.target.value)} />
-                <button className="btn btn-outline-primary btn-sm mt-2" onClick={handleChangeEmail}>Mettre à jour</button>
-              </div>
               <button className="btn btn-outline-warning btn-sm mt-2" onClick={handleResetPassword}>
                 🔐 Réinitialiser mot de passe
               </button>
@@ -164,7 +142,7 @@ export default function Navbar({ userEmail, role }) {
               <button className="btn-close" onClick={() => setShowSettings(false)}></button>
             </div>
             <div className="modal-body">
-              <p>🌗 Thème actuel : <strong>{theme}</strong></p>
+              <p>Thème actuel : <strong>{theme}</strong></p>
               <button className="btn btn-outline-primary btn-sm" onClick={toggleTheme}>
                 Changer de thème
               </button>
@@ -176,7 +154,7 @@ export default function Navbar({ userEmail, role }) {
         </div>
       )}
 
-      {/* Modale Modifier mot de passe */}
+      {/* Modale Changement mot de passe */}
       {showPasswordModal && (
         <div className="modal fade show d-block" tabIndex="-1">
           <div className="modal-dialog"><div className="modal-content">
@@ -186,7 +164,7 @@ export default function Navbar({ userEmail, role }) {
             </div>
             <div className="modal-body">
               <div className="mb-3">
-                <label>Ancien mot de passe</label>
+                <label>Mot de passe actuel</label>
                 <input type="password" className="form-control" value={oldPassword} onChange={(e) => setOldPassword(e.target.value)} />
               </div>
               <div className="mb-3">
