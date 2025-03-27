@@ -31,19 +31,22 @@
 
 1. Clone le repo :
 
-bash
+```bash
 git clone https://github.com/ton-utilisateur/edu-ressources.git
 cd edu-ressources
+```
 
 2. Installe les dépendances :
 
-bash
+```bash
 npm install
+```
 
 3. Configure Firebase :
 
-Crée un fichier .env ou modifie firebase.js avec tes clés Firebase :
+Crée un fichier `.env` ou modifie directement `firebase.js` avec tes clés Firebase :
 
+```js
 const firebaseConfig = {
   apiKey: 'YOUR_API_KEY',
   authDomain: 'YOUR_AUTH_DOMAIN',
@@ -52,33 +55,49 @@ const firebaseConfig = {
   messagingSenderId: 'YOUR_MESSAGING_SENDER_ID',
   appId: 'YOUR_APP_ID'
 };
+```
+
+---
 
 ## 🚀 Lancer le projet en local
+
 ```bash
 npm start
+```
 
-## 🌐 Déploiement
+---
+
+## 🌐 Déploiement sur Firebase (optionnel)
+
 1. Installe Firebase CLI :
 
 ```bash
 npm install -g firebase-tools
+```
 
 2. Connecte ton compte Firebase :
 
 ```bash
 firebase login
+```
 
-3. Initialise Firebase dans ton projet :
+3. Initialise Firebase dans ton projet (si ce n’est pas encore fait) :
 
 ```bash
 firebase init
+```
 
 4. Build l’application pour la production :
 
 ```bash
 npm run build
+```
 
-5. Déploie-la sur Firebase :
+5. Déploie l’application sur Firebase :
 
 ```bash
 firebase deploy
+```
+
+---
+
