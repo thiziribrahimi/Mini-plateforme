@@ -104,11 +104,11 @@ firebase deploy
 
 Voici un aperçu de l’interface :
 
-![La page de connexion / inscription](![image](https://github.com/user-attachments/assets/e9020843-23d7-403a-b820-82b0f1d27e5d)
-)
-![L’espace élève](![image](https://github.com/user-attachments/assets/7ab161e1-5d57-48ab-a27d-d19ade165f9a)
-)
-![L’espace tuteur](![image](https://github.com/user-attachments/assets/bb2b7419-3b8f-4d82-bc25-591543675a03)
-)
+![La page de connexion / inscription](https://github.com/user-attachments/assets/e9020843-23d7-403a-b820-82b0f1d27e5d)
+
+![L’espace élève](https://github.com/user-attachments/assets/7ab161e1-5d57-48ab-a27d-d19ade165f9a)
+
+![L’espace tuteur](https://github.com/user-attachments/assets/bb2b7419-3b8f-4d82-bc25-591543675a03)
+
 
 
