@@ -10,10 +10,10 @@
 - 👨‍🏫 Rôles : Tuteur / Élève
 - ➕ Ajouter des ressources (titre, URL, description)
 - 📂 Liste des ressources selon le rôle :
-  - **Tuteur** : peut modifier / supprimer ses ressources
+  - **Tuteur** : peut Ajouter / modifier / supprimer ses ressources
   - **Élève** : peut enregistrer et gérer ses ressources favorites
 - 🔍 Barre de recherche
-- 📱 Interface responsive (mobile & desktop)
+- 📱 Interface responsive (mobile et desktop)
 - 🧑‍🎓 Avatar avec menu (profil, mot de passe, déconnexion)
 
 ---
@@ -21,7 +21,7 @@
 ## 🛠️ Technologies utilisées
 
 - **React.js** (Frontend)
-- **Firebase Auth & Firestore** (Backend & BDD)
+- **Firebase Auth et Firestore** (Backend et BDD)
 - **Bootstrap** + **CSS personnalisé**
 
 ---
