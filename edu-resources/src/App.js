@@ -10,8 +10,7 @@ import Navbar from './Navbar';
 function App() {
   const [user, setUser] = useState(null);
   const [role, setRole] = useState(null);
-  // Surveille l'état d'authentification de l'utilisateur
-  // Si connecté, on récupère son rôle depuis Firestore (tuteur ou élève)
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (currentUser) => {
       setUser(currentUser);
@@ -22,7 +21,7 @@ function App() {
 
         if (docSnap.exists()) {
           const userData = docSnap.data();
-          setRole(userData.role); 
+          setRole(userData.role);
         }
       } else {
         setRole(null);
@@ -33,8 +32,8 @@ function App() {
   }, []);
 
   const getIllustration = () => {
-    if (role === 'tuteur') return '/educative.png';    // tuteur
-    if (role === 'eleve') return '/learn_kid.png';     // élève
+    if (role === 'tuteur') return '/educative.png';
+    if (role === 'eleve') return '/learn_kid.png';
     return null;
   };
 
@@ -50,26 +49,34 @@ function App() {
         <>
           <Navbar userEmail={user.email} role={role} />
 
-          <div className="container-fluid py-5">
+          <div className="container-fluid py-4">
             <div className="row">
               
-              {/* Colonne image sticky à gauche */}
+              {/* Illustration en haut (mobile only) */}
+              <div className="d-block d-md-none text-center mb-4">
+                {getIllustration() && (
+                  <>
+                    <img src={getIllustration()} alt="Illustration" className="edu-image" />
+                    <p className="quote-text mt-2">{getCitation()}</p>
+                  </>
+                )}
+              </div>
+
+              {/* Illustration fixe à gauche (desktop only) */}
               <div className="col-md-3 d-none d-md-block">
-                <div className="sticky-top" style={{ top: '80px' }}>
+                <div className="sticky-top" style={{ top: '90px' }}>
                   {getIllustration() && (
-                    <div className="text-center">
-                      <img
-                        src={getIllustration()}
-                        alt="Illustration"
-                        className="edu-image"
-                      />
-                      <p className="quote-text mt-2">{getCitation()}</p>
-                    </div>
+                    <>
+                      <img src={getIllustration()} alt="Illustration" className="edu-image fixed-illustration" />
+                      <div className="quote-wrapper mt-2">
+                        <p className="quote-text">{getCitation()}</p>
+                      </div>
+                    </>
                   )}
                 </div>
               </div>
 
-              {/* Colonne contenu */}
+              {/* Contenu principal */}
               <div className="col-md-9">
                 {role === 'tuteur' && <ResourceForm />}
                 <ResourceList role={role} />

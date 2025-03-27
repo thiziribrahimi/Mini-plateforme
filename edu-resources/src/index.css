@@ -5,6 +5,7 @@ body {
   padding-bottom: 3rem;
 }
 
+
 .card {
   background: linear-gradient(to bottom right, #e0f2fe, #fce7f3);
   border: none;
@@ -23,24 +24,12 @@ body {
   color: #4F46E5;
 }
 
-.btn-green {
-  background-color: #22C55E;
-  border: none;
-  color: white;
-  font-weight: 600;
-  border-radius: 10px;
-}
-
-.btn-green:hover {
-  background-color: #16A34A;
-  transform: scale(1.01);
-}
-
 input.form-control {
   border-radius: 12px;
   border: 1px solid #cbd5e1;
   padding: 10px 14px;
 }
+
 
 .list-group-item {
   background: #f9fafb;
@@ -53,6 +42,20 @@ input.form-control {
 
 .list-group-item:hover {
   background: #f0f9ff;
+  transform: scale(1.01);
+}
+
+
+.btn-green {
+  background-color: #22C55E;
+  border: none;
+  color: white;
+  font-weight: 600;
+  border-radius: 10px;
+}
+
+.btn-green:hover {
+  background-color: #16A34A;
   transform: scale(1.01);
 }
 
@@ -79,25 +82,8 @@ input.form-control {
   background-color: #EF4444;
   color: white;
 }
-.edu-image {
-  width: 100%;
-  max-width: 420px;         /* Plus grande */
-  border-radius: 20px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-  transition: transform 0.3s ease;
-  margin-left: -80px;       /* Décalage à gauche */
-}
 
-.edu-image:hover {
-  transform: scale(1.04);
-}
 
-@media (max-width: 768px) {
-  .edu-image {
-    margin-left: 0;
-    margin-bottom: 2rem;
-  }
-}
 .avatar-circle {
   background: #6c63ff;
   color: white;
@@ -139,4 +125,92 @@ input.form-control {
 
 .dropdown-menu-custom .dropdown-item:hover {
   background-color: #f2f2f2;
+}
+
+
+.edu-image {
+  width: 100%;
+  border-radius: 20px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease;
+}
+
+.edu-image:hover {
+  transform: scale(1.04);
+}
+
+.quote-text {
+  font-style: italic;
+  color: #555;
+  font-size: 0.95rem;
+  margin-top: 0.5rem;
+}
+
+
+.fixed-illustration-container {
+  position: fixed;
+  top: 100px;
+  left: 30px;
+  max-width: 300px;
+  z-index: 0;
+  text-align: center;
+}
+
+.fixed-illustration-container .edu-image {
+  width: 100%;
+}
+
+.fixed-illustration-container .quote-text {
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+
+@media (max-width: 768px) {
+  .card-body {
+    padding: 1.5rem;
+  }
+
+  .card-title {
+    font-size: 1.25rem;
+  }
+
+  .list-group-item {
+    padding: 0.8rem;
+    font-size: 0.9rem;
+    margin-top: 0.7rem;
+  }
+
+  .btn {
+    font-size: 0.85rem;
+    padding: 6px 10px;
+  }
+
+  .quote-text {
+    font-size: 0.85rem;
+    text-align: center;
+  }
+
+  .edu-image {
+    margin: 0 auto;
+    display: block;
+    max-width: 85%;
+  }
+
+  .fixed-illustration-container {
+    position: static;
+    margin: 1.5rem auto;
+    max-width: 100%;
+    text-align: center;
+  }
+
+  .fixed-illustration-container .edu-image {
+    max-width: 85%;
+  }
+
+  .fixed-illustration-container .quote-text {
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+  }
 }
