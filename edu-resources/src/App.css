@@ -36,3 +36,13 @@
     transform: rotate(360deg);
   }
 }
+.sticky-top {
+  position: sticky;
+  top: 80px;
+  z-index: 10;
+}
+.navbar.sticky-top {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  z-index: 1030;
+}

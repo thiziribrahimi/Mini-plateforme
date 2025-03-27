@@ -68,7 +68,7 @@ export default function Navbar({ userEmail, role }) {
 
   return (
     <>
-      <nav className={`navbar ${theme === 'dark' ? 'navbar-dark bg-dark' : 'navbar-light bg-light'} px-3`}>
+      <nav className={`navbar sticky-top ${theme === 'dark' ? 'navbar-dark bg-dark' : 'navbar-light bg-light'} px-3`}>
         <div className="container-fluid d-flex justify-content-between align-items-center">
           <a className="navbar-brand fw-bold" href="/">📚 EduRessources</a>
 
@@ -112,7 +112,7 @@ export default function Navbar({ userEmail, role }) {
         </div>
       </nav>
 
-      {/* Modale Profil (email affiché mais non modifiable) */}
+      {/* Modale profil */}
       {showProfile && (
         <div className="modal fade show d-block" tabIndex="-1">
           <div className="modal-dialog"><div className="modal-content">
@@ -133,7 +133,7 @@ export default function Navbar({ userEmail, role }) {
         </div>
       )}
 
-      {/* Modale Paramètres */}
+      {/* Modale paramètres */}
       {showSettings && (
         <div className="modal fade show d-block" tabIndex="-1">
           <div className="modal-dialog"><div className="modal-content">
@@ -142,7 +142,7 @@ export default function Navbar({ userEmail, role }) {
               <button className="btn-close" onClick={() => setShowSettings(false)}></button>
             </div>
             <div className="modal-body">
-              <p>Thème actuel : <strong>{theme}</strong></p>
+              <p>🌗 Thème actuel : <strong>{theme}</strong></p>
               <button className="btn btn-outline-primary btn-sm" onClick={toggleTheme}>
                 Changer de thème
               </button>
@@ -154,7 +154,7 @@ export default function Navbar({ userEmail, role }) {
         </div>
       )}
 
-      {/* Modale Changement mot de passe */}
+      {/* Modale changement de mot de passe */}
       {showPasswordModal && (
         <div className="modal fade show d-block" tabIndex="-1">
           <div className="modal-dialog"><div className="modal-content">
@@ -164,17 +164,27 @@ export default function Navbar({ userEmail, role }) {
             </div>
             <div className="modal-body">
               <div className="mb-3">
-                <label>Mot de passe actuel</label>
-                <input type="password" className="form-control" value={oldPassword} onChange={(e) => setOldPassword(e.target.value)} />
+                <label>Ancien mot de passe</label>
+                <input
+                  type="password"
+                  className="form-control"
+                  value={oldPassword}
+                  onChange={(e) => setOldPassword(e.target.value)}
+                />
               </div>
               <div className="mb-3">
                 <label>Nouveau mot de passe</label>
-                <input type="password" className="form-control" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
+                <input
+                  type="password"
+                  className="form-control"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                />
               </div>
             </div>
             <div className="modal-footer">
               <button className="btn btn-secondary" onClick={() => setShowPasswordModal(false)}>Annuler</button>
-              <button className="btn btn-success" onClick={handlePasswordChange}>Enregistrer</button>
+              <button className="btn btn-success" onClick={handlePasswordChange}>Valider</button>
             </div>
           </div></div>
         </div>

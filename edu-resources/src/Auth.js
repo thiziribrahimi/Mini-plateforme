@@ -4,11 +4,13 @@ import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'fire
 import { doc, setDoc } from 'firebase/firestore';
 
 export default function Auth() {
+ 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState('tuteur');
-  const [isLogin, setIsLogin] = useState(true);
+  const [role, setRole] = useState('tuteur'); 
+  const [isLogin, setIsLogin] = useState(true); 
 
+  // Gère la soumission du formulaire (connexion ou inscription)
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -19,6 +21,7 @@ export default function Auth() {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
 
+        // Enregistrement du rôle dans Firestore
         await setDoc(doc(db, 'users', user.uid), {
           email: email,
           role: role
@@ -38,7 +41,10 @@ export default function Auth() {
           <h3 className="card-title text-center mb-4">
             {isLogin ? 'Connexion' : 'Inscription'}
           </h3>
+
+          {/* Formulaire d'authentification */}
           <form onSubmit={handleSubmit}>
+            {/* Champ email */}
             <div className="mb-3">
               <label>Email :</label>
               <input
@@ -50,6 +56,8 @@ export default function Auth() {
                 required
               />
             </div>
+
+            {/* Champ mot de passe */}
             <div className="mb-3">
               <label>Mot de passe :</label>
               <input
@@ -62,6 +70,7 @@ export default function Auth() {
               />
             </div>
 
+            {/* Sélection du rôle (affiché uniquement en mode inscription) */}
             {!isLogin && (
               <div className="mb-3">
                 <label>Rôle :</label>
@@ -76,11 +85,13 @@ export default function Auth() {
               </div>
             )}
 
+            {/* Bouton de soumission */}
             <button type="submit" className="btn btn-primary w-100">
               {isLogin ? 'Se connecter' : 'S’inscrire'}
             </button>
           </form>
 
+          {/* Lien pour basculer entre inscription et connexion */}
           <div className="text-center mt-3">
             <button
               className="btn btn-link"
