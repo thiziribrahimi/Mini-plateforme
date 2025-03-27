@@ -31,13 +31,13 @@
 
 1. Clone le repo :
 
-```bash
+bash
 git clone https://github.com/ton-utilisateur/edu-ressources.git
 cd edu-ressources
 
 2. Installe les dépendances :
 
-```bash
+bash
 npm install
 
 3. Configure Firebase :
@@ -53,27 +53,27 @@ const firebaseConfig = {
   appId: 'YOUR_APP_ID'
 };
 ## 🚀 Lancer le projet en local
-```bash
+bash
 npm start
 
 ## 🌐 Déploiement
 1. Installe Firebase CLI :
 
-```bash
+bash
 npm install -g firebase-tools
 
 2. Connecte ton compte Firebase :
 
-```bash
+bash
 firebase login
 3. Initialise Firebase dans ton projet :
 
-```bash
+bash
 firebase init
 
 4. Build l’application pour la production :
 
-```bash
+bash
 npm run build
 
 5. Déploie-la sur Firebase :
