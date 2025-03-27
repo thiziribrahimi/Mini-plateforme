@@ -32,7 +32,7 @@
 1. Clone le repo :
 
 ```bash
-git clone https://github.com/ton-utilisateur/edu-ressources.git
+git clone https://github.com/thiziribrahimi/Mini-plateforme.git
 cd edu-ressources
 ```
 
@@ -67,7 +67,7 @@ npm start
 
 ---
 
-## 🌐 Déploiement sur Firebase (optionnel)
+## 🌐 Déploiement sur Firebase 
 
 1. Installe Firebase CLI :
 
@@ -81,7 +81,7 @@ npm install -g firebase-tools
 firebase login
 ```
 
-3. Initialise Firebase dans ton projet (si ce n’est pas encore fait) :
+3. Initialise Firebase dans ton projet :
 
 ```bash
 firebase init
@@ -100,4 +100,15 @@ firebase deploy
 ```
 
 ---
+## 📸 Aperçu
+
+Voici un aperçu de l’interface :
+
+![La page de connexion / inscription](![image](https://github.com/user-attachments/assets/e9020843-23d7-403a-b820-82b0f1d27e5d)
+)
+![L’espace élève](![image](https://github.com/user-attachments/assets/7ab161e1-5d57-48ab-a27d-d19ade165f9a)
+)
+![L’espace tuteur](![image](https://github.com/user-attachments/assets/bb2b7419-3b8f-4d82-bc25-591543675a03)
+)
+
 
