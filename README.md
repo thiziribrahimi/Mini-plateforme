@@ -13,7 +13,6 @@
   - **Tuteur** : peut modifier / supprimer ses ressources
   - **Élève** : peut enregistrer et gérer ses ressources favorites
 - 🔍 Barre de recherche
-- 🌓 Thème clair / sombre
 - 📱 Interface responsive (mobile & desktop)
 - 🧑‍🎓 Avatar avec menu (profil, mot de passe, déconnexion)
 
